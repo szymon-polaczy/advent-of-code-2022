@@ -4,15 +4,20 @@ use std::io::{ self, BufRead, BufReader };
 fn main() {
     let reinders: Vec<Vec<i32>> = read_input_file();
     
-    let mut max: i32 = 0;
+    let mut reinders_summed: Vec<i32> = Vec::new();
+
     for singular_reinder in &reinders {
         let sum = singular_reinder.iter().sum();
-        if sum > max {
-            max = sum;
-        }
+        reinders_summed.push(sum);
     }
 
-    println!("{}", max);
+    reinders_summed.sort();
+    reinders_summed.reverse();
+
+    let top_3 = &reinders_summed[0..3];
+    let sum: i32 = top_3.iter().sum();
+
+    println!("{}", sum);
 }
 
 fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
