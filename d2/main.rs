@@ -2,7 +2,7 @@ use std::fs::File;
 use std::io::{ self, BufRead, BufReader };
 
 fn main() {
-    // Lose - 0
+// Lose - 0
     // Draw - 3
     // Win - 6
 
@@ -19,10 +19,10 @@ fn main() {
     for line in lines {
         let text = line.unwrap();
 
-        let you = text.chars().nth(2).unwrap();
+        let hand = text.chars().nth(0).unwrap();
         
         let round_score = round_score(text);
-        let hand_score = hand_score(you);
+        let hand_score = hand_score(hand, round_score);
 
         let sum = round_score + hand_score;
 
@@ -32,28 +32,42 @@ fn main() {
     println!("{}", score);
 }
 
-fn hand_score(hand: char) -> i32 {
-    if hand == 'X' { 
-        return 1; 
+fn hand_score(hand: char, round_score: i32) -> i32 {
+    if round_score == 0 {
+        if hand == 'A' {
+            return 3;
+        } else if hand == 'B' {
+            return 1;
+        } else {
+            return 2;
+        }
+    } else if round_score == 3 {
+        if hand == 'A' {
+            return 1;
+        } else if hand == 'B' {
+            return 2;
+        } else {
+            return 3;
+        }
+    } else {
+        if hand == 'A' {
+            return 2;
+        } else if hand == 'B' {
+            return 3;
+        } else {
+            return 1;
+        }
     }
-
-    if hand == 'Y' {
-        return 2;
-    }
-
-    if hand == 'Z' {
-        return 3;
-    }
-
-    return 0;
 }
 
 fn round_score(line: String) -> i32 {
-    if line == "A X" || line == "B Y" || line == "C Z" {
+    let ending = line.chars().nth(2).unwrap();
+
+    if ending == 'Y' {
         return 3;
     }
 
-    if line == "A Y" || line == "B Z" || line == "C X" {
+    if ending == 'Z' {
         return 6;
     }
 
