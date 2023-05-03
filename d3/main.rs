@@ -8,18 +8,37 @@ fn main() {
 
     let mut score = 0;
 
+    let mut index = 0;
+    let mut line_1: String = String::new();
+    let mut line_2: String = String::new();
     for line in lines {
-        let text: String = line.unwrap();
-        let text_length = text.chars().count();
-        
-        let first_part: String = (&text[0..(text_length/2)]).to_string();
-        let second_part: String = (&text[(text_length/2)..text_length]).to_string();
+        index += 1;
 
-        for character in first_part.chars(){
-            if second_part.contains( character ) {
+        println!("{}", index);
+
+        let text: String = line.unwrap();
+
+        if index < 3 {
+            if line_1.is_empty() {
+                line_1 = text;
+                continue;
+            }
+
+            line_2 = text;
+            continue;
+        }
+        
+        for character in text.chars(){
+            if line_1.contains( character ) && line_2.contains(character) {
                 score += get_character_score(character);
                 break;
             }
+        }
+
+        if index == 3 {
+            index = 0;
+            line_1 = String::new();
+            line_2 = String::new();
         }
     }
 
