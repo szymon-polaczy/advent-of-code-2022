@@ -15,9 +15,13 @@ fn main() {
         let first_elve: Vec<i32> = elves[0].split('-').map(|x| x.parse::<i32>().unwrap()).collect();
         let second_elve: Vec<i32> = elves[1].split('-').map(|x| x.parse::<i32>().unwrap()).collect();
 
-        if (first_elve[0] <= second_elve[0] && first_elve[1] >= second_elve[1])
-            || (second_elve[0] <= first_elve[0] && second_elve[1] >= first_elve[1]) {
-            sum += 1;
+        'main_loop: for first in first_elve[0]..=first_elve[1] {
+            for second in second_elve[0]..=second_elve[1] {
+                if first == second {
+                    sum += 1;
+                    break 'main_loop;
+                }
+            }
         }
     }
 
