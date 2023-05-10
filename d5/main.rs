@@ -27,7 +27,7 @@ fn main() {
     for column in 0..number_of_columns {
         let mut column_array: Vec<char> = Vec::new();
 
-        let mut lines = read_lines(file_name.to_string());
+        let lines = read_lines(file_name.to_string());
         let important_lines = lines.take(number_of_rows);
 
         for row in important_lines {
@@ -45,10 +45,39 @@ fn main() {
         input_map.push(column_array);
     }
 
-    println!("{:?}", input_map);
+    let mut index = 0;
+    let lines = read_lines(file_name.to_string());
+    for line in lines {
+        index += 1;
 
-    let mut input_map: Vec<char> = Vec::new();
-  
+        if index <= number_of_rows + 2 {
+            continue;
+        }
+
+        let mut text = line.unwrap();
+        text = text.replace("move ", "");
+        text = text.replace(" from ", " ");
+        text = text.replace(" to ", " ");
+
+        let digits: Vec<usize> = text.split(' ').map(|x| x.parse::<usize>().unwrap()).collect();
+
+        let how_many_to_move: usize = digits[0];       
+        let from_which_column: usize = digits[1];
+        let place_in_this_column: usize = digits[2];
+
+        for _ in 1..=how_many_to_move {
+            let moved_value = input_map[from_which_column - 1].pop().unwrap();
+            input_map[place_in_this_column - 1].push(moved_value);
+        }
+    }
+
+    let mut end_value: String = String::new();
+
+    for column in input_map.iter() {
+        end_value.push(column.last().unwrap().clone());
+    }
+
+    println!("{}", end_value);
 }
 
 fn read_lines(filename: String) -> io::Lines<BufReader<File>> {
