@@ -42,6 +42,8 @@ fn main() {
             }
         }
 
+        column_array.reverse();
+
         input_map.push(column_array);
     }
 
@@ -59,17 +61,27 @@ fn main() {
         text = text.replace(" from ", " ");
         text = text.replace(" to ", " ");
 
+        //println!("{:?}", text);
+
         let digits: Vec<usize> = text.split(' ').map(|x| x.parse::<usize>().unwrap()).collect();
 
         let how_many_to_move: usize = digits[0];       
         let from_which_column: usize = digits[1];
         let place_in_this_column: usize = digits[2];
 
+        let mut moved_array: Vec<char> = Vec::new();
         for _ in 1..=how_many_to_move {
             let moved_value = input_map[from_which_column - 1].pop().unwrap();
-            input_map[place_in_this_column - 1].push(moved_value);
+            moved_array.push(moved_value);
+            //input_map[place_in_this_column - 1].push(moved_value);
+        }
+
+        for _ in 1..=how_many_to_move {
+            input_map[place_in_this_column - 1].push(moved_array.pop().unwrap());
         }
     }
+
+    println!("{:?}", input_map);
 
     let mut end_value: String = String::new();
 
